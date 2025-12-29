@@ -13,7 +13,7 @@ export const translations: Translations = {
   // Header
   "nav.home": { ms: "Utama", en: "Home" },
   "nav.about": { ms: "Tentang Kami", en: "About Us" },
-  "nav.guidelines": { ms: "Garis Panduan Penduduk", en: "Resident Guidelines" },
+  "nav.guidelines": { ms: "Panduan Penduduk", en: "Resident Guidelines" },
   "nav.fees": { ms: "Kutipan Yuran Keselamatan", en: "Security Fee Collection" },
   "nav.announcements": { ms: "Pengumuman", en: "Announcements" },
   "nav.contact": { ms: "Hubungi Kami", en: "Contact Us" },
@@ -80,6 +80,18 @@ export const translations: Translations = {
   "complaint.action4": { ms: "Pemilik perlu melaporkan kepada pemaju atau agensi berkaitan. Salinan kepada: Persatuan Penduduk", en: "Owners need to report to the developer or agency related. Copy to: Resident Association" },
   "complaint.duration4": { ms: "Dalam Lima (5) Hari Bekerja / Tertakluk kepada agensi berkaitan", en: "In Five (5) Working Days / Subject to relevant agencies" },
   "complaint.notes4": { ms: "Persatuan Penduduk akan membantu dalam sokongan susulan serta rujukan kepada agensi berkaitan (jika perlu)", en: "The Resident Association will assist in follow-up support as well as referrals to relevant agencies (if necessary)" },
+  
+  // Resident Guidelines Page
+  "guide.title": { ms: "Panduan Penduduk", en: "Resident Guidelines" },
+  "guide.procedures.title": { ms: "Tatacara dan Panduan Majlis", en: "Council Procedures and Guidelines" },
+  "guide.download": { ms: "Muat Turun", en: "Download" },
+  "guide.scanQR": { ms: "Imbas Untuk Borang Online", en: "Scan for Online Form" },
+  "guide.goToForm": { ms: "Pergi ke Borang Notifikasi", en: "Go to Notification Form" },
+  "guide.accessCard.title": { ms: "Permohonan Kad Akses Tambahan", en: "Additional Access Card Application" },
+  "guide.accessCard.steps": { ms: "Langkah Permohonan", en: "Application Steps" },
+  "guide.accessCard.fees": { ms: "Bayaran & Maklumat Akaun", en: "Fees & Account Info" },
+  "guide.downloadForm": { ms: "Muat Turun Borang", en: "Download Form" },
+  "guide.contacts.title": { ms: "Info dan Talian Berguna", en: "Useful Info & Contacts" },
   
   // Login
   "login.title": { ms: "Log Masuk Portal Penduduk", en: "Resident Portal Login" },
