@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Feedback from "./pages/Feedback";
 import ComplaintStructure from "./pages/ComplaintStructure";
+import ResidentGuidelines from "./pages/ResidentGuidelines";
 import DashboardLayout from "./layouts/DashboardLayout";
 import NotFound from "./pages/NotFound";
 
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/complaint" element={<ComplaintStructure />} />
+              <Route path="/guide" element={<ResidentGuidelines />} />
               
               {/* Dashboard Routes */}
               <Route path="/dashboard" element={<DashboardLayout />}>
