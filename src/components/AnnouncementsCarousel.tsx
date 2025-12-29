@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Link } from "react-router-dom";
 
 interface Announcement {
   id: number;
   title: string;
   image: string;
   type: "event" | "payment" | "app";
+  link: string;
 }
 
 const AnnouncementsCarousel = () => {
@@ -16,21 +18,24 @@ const AnnouncementsCarousel = () => {
   const announcements: Announcement[] = [
     {
       id: 1,
-      title: language === "ms" ? "HARI KELUARGA 2025" : "FAMILY DAY 2025",
-      image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop",
+      title: language === "ms" ? "MESYUARAT AGUNG TAHUNAN 2024" : "ANNUAL GENERAL MEETING 2024",
+      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop",
       type: "event",
+      link: "/announcements",
     },
     {
       id: 2,
       title: language === "ms" ? "DAH BAYAR KE YURAN SEKURITI?" : "HAVE YOU PAID SECURITY FEE?",
       image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=300&fit=crop",
       type: "payment",
+      link: "/fees",
     },
     {
       id: 3,
       title: language === "ms" ? "JAGAAPP 2.0 KINI DI SINI!" : "JAGAAPP 2.0 NOW AVAILABLE!",
       image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop",
       type: "app",
+      link: "/announcements",
     },
   ];
 
@@ -75,13 +80,14 @@ const AnnouncementsCarousel = () => {
               else if (isNext) position = "right";
 
               return (
-                <div
+                <Link
                   key={announcement.id}
-                  className={`transition-all duration-500 ${
+                  to={announcement.link}
+                  className={`transition-all duration-500 block ${
                     position === "center"
                       ? "scale-100 opacity-100 z-10"
                       : position === "left" || position === "right"
-                      ? "scale-75 opacity-50 hidden md:block"
+                      ? "scale-75 opacity-50 hidden md:block pointer-events-none"
                       : "hidden"
                   }`}
                 >
@@ -100,7 +106,7 @@ const AnnouncementsCarousel = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
