@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Menu, X, Building2, Search, Moon, Sun, Languages } from "lucide-react";
+import { Menu, X, Search, Moon, Sun, Languages } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import logoPersatuan from "@/assets/logo-persatuan.png";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -28,14 +28,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center border-2 border-primary">
-              <Building2 className="w-6 h-6 text-primary" />
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-xs font-semibold text-primary">Persatuan Penduduk</p>
-              <p className="text-sm font-bold text-foreground">The Strata</p>
-              <p className="text-xs text-muted-foreground">Bandar Puteri Bangi</p>
-            </div>
+            <img 
+              src={logoPersatuan} 
+              alt="Persatuan Penduduk The Strata Bandar Puteri Bangi" 
+              className="h-12 md:h-14 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -81,13 +78,6 @@ const Header = () => {
                 className="data-[state=checked]:bg-primary"
               />
               <Moon className="w-4 h-4 text-muted-foreground" />
-            </div>
-
-            {/* Login Button */}
-            <div className="hidden md:block">
-              <Button variant="default" size="sm" className="font-semibold" asChild>
-                <Link to="/login">{t("nav.login")}</Link>
-              </Button>
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -149,10 +139,6 @@ const Header = () => {
                   className="data-[state=checked]:bg-primary"
                 />
               </div>
-              
-              <Button variant="default" className="mt-4 w-full font-semibold" asChild>
-                <Link to="/login">{t("nav.login")}</Link>
-              </Button>
             </nav>
           </div>
         )}
