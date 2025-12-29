@@ -14,7 +14,7 @@ export const translations: Translations = {
   "nav.home": { ms: "Utama", en: "Home" },
   "nav.about": { ms: "Tentang Kami", en: "About Us" },
   "nav.guidelines": { ms: "Panduan Penduduk", en: "Resident Guidelines" },
-  "nav.fees": { ms: "Kutipan Yuran Keselamatan", en: "Security Fee Collection" },
+  "nav.fees": { ms: "Yuran Keselamatan", en: "Security Fee" },
   "nav.announcements": { ms: "Pengumuman", en: "Announcements" },
   "nav.contact": { ms: "Hubungi Kami", en: "Contact Us" },
   "nav.complaint": { ms: "Struktur Aduan", en: "Complaint Structure" },
@@ -33,6 +33,11 @@ export const translations: Translations = {
   "announcements.agm": { ms: "Mesyuarat Agung Tahunan", en: "AGM Meeting Scheduled" },
   "announcements.security": { ms: "Bayaran Yuran Keselamatan", en: "Security Fee Payment" },
   "announcements.app": { ms: "JagaApp 2.0 Kini Di Sini", en: "JagaApp 2.0 Now Available" },
+  "announcements.agmTitle": { ms: "Mesyuarat Agung Tahunan kali ke-3 (AGM 2024)", en: "3rd Annual General Meeting (AGM 2024)" },
+  "announcements.hits": { ms: "Hits: 30", en: "Hits: 30" },
+  "announcements.rsvpClosed": { ms: "Daftar Kehadiran (RSVP) Telah Ditutup", en: "RSVP Registration Closed" },
+  "announcements.rsvpNote": { ms: "Jika Ahli Persatuan tidak dapat menghadirkan diri dan ingin menghantar usul, Ahli Persatuan boleh juga klik link diatas. (Penghantaran Usul telah tutup. Usul selepas 11 Mei 2024 tidak akan diproses)", en: "If Association Members cannot attend and wish to submit a motion, Members can also click the link above. (Motion submission has closed. Motions after May 11, 2024 will not be processed)" },
+  "announcements.location": { ms: "Lokasi Mesyuarat", en: "Meeting Location" },
   
   // Quick Links
   "quick.resources": { ms: "Sumber Penduduk", en: "Resident Resources" },
@@ -92,6 +97,24 @@ export const translations: Translations = {
   "guide.accessCard.fees": { ms: "Bayaran & Maklumat Akaun", en: "Fees & Account Info" },
   "guide.downloadForm": { ms: "Muat Turun Borang", en: "Download Form" },
   "guide.contacts.title": { ms: "Info dan Talian Berguna", en: "Useful Info & Contacts" },
+  
+  // Security Fees Page
+  "fees.title": { ms: "Yuran Keselamatan", en: "Security Fee" },
+  "fees.subtitle": { ms: "Semak status bayaran bulanan sekuriti anda", en: "Check your monthly security fee payment status" },
+  "fees.download": { ms: "Muat Turun Senarai Pembayaran", en: "Download Payment List" },
+  "fees.checkTitle": { ms: "Semak Bayaran Tahun Terdahulu 2022-2024", en: "Check Previous Years Payment 2022-2024" },
+  "fees.greeting": { ms: "Kepada semua penduduk The Strata Bandar Puteri Bangi,", en: "To all residents of The Strata Bandar Puteri Bangi," },
+  "fees.intro": { ms: "Untuk memastikan rekod bayaran sekuriti sentiasa dikemas kini, anda diminta untuk menyemak status bayaran bulanan sekuriti anda di dokumen lampiran dibawah. Langkah-langkah berikut boleh diikuti:", en: "To ensure security payment records are always up to date, you are requested to check your monthly security payment status in the attached document below. The following steps can be followed:" },
+  "fees.stepsTitle": { ms: "Langkah-langkah:", en: "Steps:" },
+  "fees.step1": { ms: "Sila rujuk kepada senarai terkini bagi Aug 2022 - December 2024 bertarikh 26 Jun 2025 (pembayaran dari link ToyyibPay).", en: "Please refer to the latest list for Aug 2022 - December 2024 dated 26 June 2025 (payment from ToyyibPay link)." },
+  "fees.step2": { ms: "Jika data bayaran anda tidak tepat, sila emelkan kepada thestratapayment@gmail.com dan screenshot untuk kami buat semakan lanjut.", en: "If your payment data is not accurate, please email thestratapayment@gmail.com with a screenshot for further verification." },
+  "fees.step3": { ms: "Pastikan semua bayaran telah dijelaskan mengikut tempoh yang ditetapkan.", en: "Ensure all payments have been settled according to the set period." },
+  "fees.step4": { ms: "Bagi bayaran sekuriti Januari 2025 keatas, sila semak pada applikasi JagaApp 2.0 anda.", en: "For security payments from January 2025 onwards, please check on your JagaApp 2.0 application." },
+  "fees.contactInfo": { ms: "Sekiranya anda mendapati terdapat sebarang kesalahan (Nama atau Keciciran maklumat bayaran) atau memerlukan semakan lanjut, sila hubungi Persatuan Penduduk dengan menghantar e-mel ke alamat berikut:", en: "If you find any errors (Name or Missing payment information) or need further verification, please contact the Residents' Association by sending an email to the following address:" },
+  "fees.appreciation": { ms: "Kerjasama anda amat dihargai bagi memastikan persekitaran kediaman kita kekal selamat dan terurus.", en: "Your cooperation is greatly appreciated to ensure our residential environment remains safe and well-managed." },
+  "fees.signature": { ms: "Terima kasih.\nPersatuan Penduduk The Strata Bandar Puteri Bangi", en: "Thank you.\nResidents' Association of The Strata Bandar Puteri Bangi" },
+  "fees.attachmentTitle": { ms: "Lampiran Pembayaran Penduduk", en: "Resident Payment Attachment" },
+  "fees.viewAttachment": { ms: "Lihat Dokumen Pembayaran", en: "View Payment Document" },
   
   // Login
   "login.title": { ms: "Log Masuk Portal Penduduk", en: "Resident Portal Login" },

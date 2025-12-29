@@ -61,18 +61,18 @@ const Index = () => {
                       className="bg-card rounded-lg p-6 border-l-4 border-accent shadow-sm hover:shadow-md transition-shadow duration-300"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="bg-accent text-accent-foreground px-3 py-2 rounded text-sm font-semibold whitespace-nowrap">
+                        <div className="bg-accent text-accent-foreground px-3 py-2 rounded text-sm font-semibold whitespace-nowrap shrink-0">
                           {item.date}
                         </div>
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <h3 className="text-lg font-semibold text-primary mb-2">
                             {item.title}
                           </h3>
-                          <p className="text-muted-foreground text-sm mb-3">
+                          <p className="text-muted-foreground text-sm mb-3 leading-relaxed">
                             {item.excerpt}
                           </p>
                           <Link
-                            to="#"
+                            to="/announcements"
                             className="inline-flex items-center gap-1 text-primary font-medium text-sm hover:gap-2 transition-all"
                           >
                             {t("news.readMore")} <ArrowRight className="w-4 h-4" />
