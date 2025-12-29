@@ -11,6 +11,12 @@ const Announcements = () => {
 
   const documents = [
     {
+      id: 0,
+      title: "xyz",
+      url: "#",
+      isNew: true
+    },
+    {
       id: 1,
       title: language === "ms" ? "Notis Mesyuarat Agung kali ke-3 2024" : "Notice of 3rd Annual General Meeting 2024",
       url: "https://thestrata.com.my/joomla30/images/Download/AGM%202024/Notis%20Jemputan%20AGM%20.pdf"
