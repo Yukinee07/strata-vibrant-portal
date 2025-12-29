@@ -1,16 +1,18 @@
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, User, CreditCard, MessageSquare, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-  { icon: User, label: "My Profile", href: "/dashboard/profile" },
-  { icon: CreditCard, label: "Payment History", href: "/dashboard/payments" },
-  { icon: MessageSquare, label: "Submit Feedback", href: "/dashboard/feedback" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const DashboardSidebar = () => {
   const location = useLocation();
+  const { t } = useLanguage();
+
+  const navItems = [
+    { icon: LayoutDashboard, label: t("dashboard.nav.dashboard"), href: "/dashboard" },
+    { icon: User, label: t("dashboard.nav.profile"), href: "/dashboard/profile" },
+    { icon: CreditCard, label: t("dashboard.nav.payments"), href: "/dashboard/payments" },
+    { icon: MessageSquare, label: t("dashboard.nav.feedback"), href: "/dashboard/feedback" },
+  ];
 
   return (
     <aside className="w-64 bg-primary min-h-screen flex flex-col">

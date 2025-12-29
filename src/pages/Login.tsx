@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Building2, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Building2, Lock, Mail, Moon, Sun, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import heroImage from "@/assets/hero-building.jpg";
 
 const Login = () => {
@@ -13,10 +16,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+  const { language, setLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // For demo purposes, navigate to dashboard
     navigate("/dashboard");
   };
 
@@ -36,121 +40,124 @@ const Login = () => {
             The Strata Community
           </h1>
           <p className="text-primary-foreground/90 text-lg max-w-md">
-            A secure, connected, and vibrant community. Access your resident portal for payments, announcements, and more.
+            {t("hero.tagline")}
           </p>
         </div>
       </div>
 
       {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background">
-        <div className="w-full max-w-md">
-          {/* Mobile Logo */}
-          <div className="lg:hidden text-center mb-8">
-            <div className="inline-flex items-center gap-2">
-              <Building2 className="w-8 h-8 text-primary" />
-              <span className="text-xl font-bold text-foreground">The Strata</span>
-            </div>
+      <div className="w-full lg:w-1/2 flex flex-col p-8 bg-background">
+        {/* Top Toggles */}
+        <div className="flex justify-end gap-4 mb-8">
+          <div className="flex items-center gap-2">
+            <Languages className="w-4 h-4 text-muted-foreground" />
+            <span className="text-xs font-medium text-muted-foreground">BM</span>
+            <Switch
+              checked={language === "en"}
+              onCheckedChange={(checked) => setLanguage(checked ? "en" : "ms")}
+              className="data-[state=checked]:bg-primary"
+            />
+            <span className="text-xs font-medium text-muted-foreground">EN</span>
           </div>
-
-          {/* Desktop Logo */}
-          <div className="hidden lg:flex justify-center mb-8">
-            <div className="inline-flex items-center gap-2">
-              <Building2 className="w-10 h-10 text-primary" />
-              <span className="text-2xl font-bold text-foreground">The Strata</span>
-            </div>
+          <div className="flex items-center gap-2">
+            <Sun className="w-4 h-4 text-muted-foreground" />
+            <Switch
+              checked={theme === "dark"}
+              onCheckedChange={toggleTheme}
+              className="data-[state=checked]:bg-primary"
+            />
+            <Moon className="w-4 h-4 text-muted-foreground" />
           </div>
+        </div>
 
-          <h2 className="text-2xl font-bold text-foreground text-center mb-2">
-            Resident Portal Login
-          </h2>
-          <p className="text-muted-foreground text-center mb-8">
-            Enter your credentials to access your account
-          </p>
-
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="email">Username or Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 h-12 border-input focus:border-primary focus:ring-primary"
-                />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="w-full max-w-md">
+            {/* Logo */}
+            <div className="flex justify-center mb-8">
+              <div className="inline-flex items-center gap-2">
+                <Building2 className="w-10 h-10 text-primary" />
+                <span className="text-2xl font-bold text-foreground">The Strata</span>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 pr-10 h-12 border-input focus:border-primary focus:ring-primary"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {showPassword ? (
-                    <EyeOff className="w-5 h-5" />
-                  ) : (
-                    <Eye className="w-5 h-5" />
-                  )}
-                </button>
-              </div>
-            </div>
+            <h2 className="text-2xl font-bold text-foreground text-center mb-2">
+              {t("login.title")}
+            </h2>
+            <p className="text-muted-foreground text-center mb-8">
+              {language === "ms" 
+                ? "Masukkan maklumat anda untuk mengakses akaun" 
+                : "Enter your credentials to access your account"}
+            </p>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="remember"
-                  checked={rememberMe}
-                  onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-                  className="border-primary data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                />
-                <Label htmlFor="remember" className="text-sm cursor-pointer">
-                  Remember Me
-                </Label>
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="email">{t("login.email")}</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder={language === "ms" ? "Masukkan e-mel anda" : "Enter your email"}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-10 h-12 border-input focus:border-primary focus:ring-primary"
+                  />
+                </div>
               </div>
-              <Link
-                to="/forgot-password"
-                className="text-sm font-medium text-accent hover:underline"
-              >
-                Forgot Password?
+
+              <div className="space-y-2">
+                <Label htmlFor="password">{t("login.password")}</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder={language === "ms" ? "Masukkan kata laluan anda" : "Enter your password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-10 pr-10 h-12 border-input focus:border-primary focus:ring-primary"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="remember"
+                    checked={rememberMe}
+                    onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                    className="border-primary data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                  />
+                  <Label htmlFor="remember" className="text-sm cursor-pointer">
+                    {t("login.remember")}
+                  </Label>
+                </div>
+                <Link to="/forgot-password" className="text-sm font-medium text-accent hover:underline">
+                  {t("login.forgot")}
+                </Link>
+              </div>
+
+              <Button type="submit" className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90">
+                {t("login.submit")}
+              </Button>
+            </form>
+
+            <p className="mt-8 text-center text-sm text-muted-foreground">
+              {t("login.noAccount")}
+            </p>
+
+            <div className="mt-8 text-center">
+              <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                ← {language === "ms" ? "Kembali ke Halaman Utama" : "Back to Homepage"}
               </Link>
             </div>
-
-            <Button
-              type="submit"
-              className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90"
-            >
-              SECURE LOGIN
-            </Button>
-          </form>
-
-          <p className="mt-8 text-center text-sm text-muted-foreground">
-            Don't have an account yet?{" "}
-            <Link to="/contact" className="text-primary font-medium hover:underline">
-              Contact the Management Office
-            </Link>
-          </p>
-
-          <div className="mt-8 text-center">
-            <Link
-              to="/"
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              ← Back to Homepage
-            </Link>
           </div>
         </div>
       </div>

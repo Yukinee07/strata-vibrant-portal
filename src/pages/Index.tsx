@@ -1,34 +1,45 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import AnnouncementsCarousel from "@/components/AnnouncementsCarousel";
 import Footer from "@/components/Footer";
 import { Book, Download, Phone, Mail, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-
-const announcements = [
-  {
-    date: "12 Oct",
-    title: "AGM Meeting Scheduled",
-    excerpt: "The Annual General Meeting for all residents has been scheduled. Your participation is crucial for community decisions regarding maintenance fees and facility upgrades.",
-  },
-  {
-    date: "05 Oct",
-    title: "Lift Maintenance Alert",
-    excerpt: "Scheduled maintenance for Lift B in Block A will occur on October 15th from 9AM to 5PM. Please use alternative lifts during this period.",
-  },
-  {
-    date: "28 Sep",
-    title: "New Parking Guidelines",
-    excerpt: "Updated parking regulations will take effect from November 1st. All residents are required to register their vehicles with the management office.",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
+  const { t, language } = useLanguage();
+
+  const announcements = [
+    {
+      date: "12 Okt",
+      title: language === "ms" ? "Mesyuarat Agung Tahunan Dijadualkan" : "AGM Meeting Scheduled",
+      excerpt: language === "ms" 
+        ? "Mesyuarat Agung Tahunan untuk semua penduduk telah dijadualkan. Penyertaan anda amat penting untuk keputusan komuniti." 
+        : "The Annual General Meeting for all residents has been scheduled. Your participation is crucial for community decisions.",
+    },
+    {
+      date: "05 Okt",
+      title: language === "ms" ? "Makluman Penyelenggaraan Lif" : "Lift Maintenance Alert",
+      excerpt: language === "ms"
+        ? "Penyelenggaraan berjadual untuk Lif B di Blok A akan berlaku pada 15 Oktober dari 9PG hingga 5PTG."
+        : "Scheduled maintenance for Lift B in Block A will occur on October 15th from 9AM to 5PM.",
+    },
+    {
+      date: "28 Sep",
+      title: language === "ms" ? "Garis Panduan Parkir Baru" : "New Parking Guidelines",
+      excerpt: language === "ms"
+        ? "Peraturan parkir yang dikemaskini akan berkuat kuasa mulai 1 November. Semua penduduk perlu mendaftarkan kenderaan."
+        : "Updated parking regulations will take effect from November 1st. All residents are required to register their vehicles.",
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
         <HeroSection />
+        <AnnouncementsCarousel />
         
         {/* Main Content Area - Two Column Layout */}
         <section className="py-16 bg-background">
@@ -38,7 +49,7 @@ const Index = () => {
               <div className="lg:w-[70%]">
                 <div className="mb-8">
                   <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-                    Community News & Events
+                    {t("news.title")}
                   </h2>
                   <div className="w-16 h-1 bg-accent rounded-full"></div>
                 </div>
@@ -64,7 +75,7 @@ const Index = () => {
                             to="#"
                             className="inline-flex items-center gap-1 text-primary font-medium text-sm hover:gap-2 transition-all"
                           >
-                            Read More <ArrowRight className="w-4 h-4" />
+                            {t("news.readMore")} <ArrowRight className="w-4 h-4" />
                           </Link>
                         </div>
                       </div>
@@ -77,7 +88,7 @@ const Index = () => {
               <aside className="lg:w-[30%]">
                 <div className="bg-secondary rounded-lg p-6 sticky top-24">
                   <h3 className="text-xl font-bold text-foreground mb-6">
-                    Resident Resources
+                    {t("quick.resources")}
                   </h3>
 
                   <div className="space-y-4">
@@ -88,7 +99,7 @@ const Index = () => {
                     >
                       <Link to="/guide">
                         <Book className="w-5 h-5" />
-                        <span className="font-medium">View Residents' Guide</span>
+                        <span className="font-medium">{t("quick.guide")}</span>
                       </Link>
                     </Button>
 
@@ -99,7 +110,7 @@ const Index = () => {
                     >
                       <Link to="/forms">
                         <Download className="w-5 h-5" />
-                        <span className="font-medium">Download Forms</span>
+                        <span className="font-medium">{t("quick.forms")}</span>
                       </Link>
                     </Button>
                   </div>
@@ -107,22 +118,22 @@ const Index = () => {
                   {/* Need Help Widget */}
                   <div className="mt-8 pt-6 border-t border-border">
                     <h4 className="font-semibold text-foreground mb-4">
-                      Need Help?
+                      {t("quick.help")}
                     </h4>
                     <div className="space-y-3">
                       <a
-                        href="mailto:management@thestrata.com"
+                        href="mailto:pptsbpbangi@gmail.com"
                         className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
                       >
                         <Mail className="w-4 h-4" />
-                        management@thestrata.com
+                        pptsbpbangi@gmail.com
                       </a>
                       <a
-                        href="tel:+60389120000"
+                        href="tel:+60193334283"
                         className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
                       >
                         <Phone className="w-4 h-4" />
-                        +603-8912 0000
+                        019-333 4283
                       </a>
                     </div>
                   </div>

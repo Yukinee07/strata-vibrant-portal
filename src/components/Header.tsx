@@ -1,46 +1,51 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Menu, X, Building2 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Menu, X, Building2, Search, Moon, Sun, Languages } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const { language, setLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
 
   const navLinks = [
-    { name: "Home", href: "/", active: true },
-    { name: "About Us", href: "/about" },
-    { name: "Residents' Guide", href: "/guide" },
-    { name: "Contact", href: "/contact" },
+    { name: t("nav.about"), href: "/about" },
+    { name: t("nav.guidelines"), href: "/guide" },
+    { name: t("nav.fees"), href: "/fees" },
+    { name: t("nav.announcements"), href: "/announcements" },
+    { name: t("nav.contact"), href: "/contact" },
   ];
 
+  const isActive = (href: string) => location.pathname === href;
+
   return (
-    <header className="sticky top-0 z-50 bg-background border-b-2 border-primary shadow-sm">
+    <header className="sticky top-0 z-50 bg-background border-b border-border shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <Building2 className="w-6 h-6 text-primary-foreground" />
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center border-2 border-primary">
+              <Building2 className="w-6 h-6 text-primary" />
             </div>
-            <span className="text-lg md:text-xl font-bold text-foreground tracking-tight">
-              Community Name
-            </span>
+            <div className="hidden sm:block">
+              <p className="text-xs font-semibold text-primary">Persatuan Penduduk</p>
+              <p className="text-sm font-bold text-foreground">The Strata</p>
+              <p className="text-xs text-muted-foreground">Bandar Puteri Bangi</p>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
-                className={`font-medium transition-colors ${
-                  link.active
+                className={`text-sm font-medium transition-colors ${
+                  isActive(link.href)
                     ? "text-primary border-b-2 border-primary pb-1"
                     : "text-foreground/80 hover:text-primary"
                 }`}
@@ -48,26 +53,55 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
+            <button className="p-2 hover:bg-secondary rounded-full transition-colors">
+              <Search className="w-5 h-5 text-foreground/70" />
+            </button>
           </nav>
 
-          {/* Login Button */}
-          <div className="hidden md:block">
-            <Button variant="default" size="lg" className="font-semibold" asChild>
-              <Link to="/login">LOGIN</Link>
-            </Button>
-          </div>
+          {/* Right Side Actions */}
+          <div className="flex items-center gap-4">
+            {/* Language Toggle */}
+            <div className="hidden md:flex items-center gap-2">
+              <Languages className="w-4 h-4 text-muted-foreground" />
+              <span className="text-xs font-medium text-muted-foreground">BM</span>
+              <Switch
+                checked={language === "en"}
+                onCheckedChange={(checked) => setLanguage(checked ? "en" : "ms")}
+                className="data-[state=checked]:bg-primary"
+              />
+              <span className="text-xs font-medium text-muted-foreground">EN</span>
+            </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6 text-foreground" />
-            ) : (
-              <Menu className="w-6 h-6 text-foreground" />
-            )}
-          </button>
+            {/* Theme Toggle */}
+            <div className="hidden md:flex items-center gap-2">
+              <Sun className="w-4 h-4 text-muted-foreground" />
+              <Switch
+                checked={theme === "dark"}
+                onCheckedChange={toggleTheme}
+                className="data-[state=checked]:bg-primary"
+              />
+              <Moon className="w-4 h-4 text-muted-foreground" />
+            </div>
+
+            {/* Login Button */}
+            <div className="hidden md:block">
+              <Button variant="default" size="sm" className="font-semibold" asChild>
+                <Link to="/login">{t("nav.login")}</Link>
+              </Button>
+            </div>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              className="lg:hidden p-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-foreground" />
+              ) : (
+                <Menu className="w-6 h-6 text-foreground" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -79,15 +113,45 @@ const Header = () => {
                   key={link.name}
                   to={link.href}
                   className={`block font-medium py-2 ${
-                    link.active ? "text-primary" : "text-foreground/80"
+                    isActive(link.href) ? "text-primary" : "text-foreground/80"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.name}
                 </Link>
               ))}
+              
+              {/* Mobile Toggles */}
+              <div className="flex items-center justify-between py-2 border-t border-border mt-2">
+                <div className="flex items-center gap-2">
+                  <Languages className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm">BM / EN</span>
+                </div>
+                <Switch
+                  checked={language === "en"}
+                  onCheckedChange={(checked) => setLanguage(checked ? "en" : "ms")}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </div>
+              
+              <div className="flex items-center justify-between py-2">
+                <div className="flex items-center gap-2">
+                  {theme === "dark" ? (
+                    <Moon className="w-4 h-4 text-muted-foreground" />
+                  ) : (
+                    <Sun className="w-4 h-4 text-muted-foreground" />
+                  )}
+                  <span className="text-sm">{theme === "dark" ? t("theme.dark") : t("theme.light")}</span>
+                </div>
+                <Switch
+                  checked={theme === "dark"}
+                  onCheckedChange={toggleTheme}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </div>
+              
               <Button variant="default" className="mt-4 w-full font-semibold" asChild>
-                <Link to="/login">LOGIN</Link>
+                <Link to="/login">{t("nav.login")}</Link>
               </Button>
             </nav>
           </div>
