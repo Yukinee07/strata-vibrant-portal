@@ -15,18 +15,12 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-
-const feedbackCategories = [
-  { value: "general", label: "General Suggestion" },
-  { value: "facility", label: "Facility Complaint" },
-  { value: "security", label: "Security Issue" },
-  { value: "maintenance", label: "Maintenance Request" },
-  { value: "other", label: "Other" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Feedback = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t, language } = useLanguage();
   const [category, setCategory] = useState("");
   const [subject, setSubject] = useState("");
   const [details, setDetails] = useState("");
@@ -34,25 +28,30 @@ const Feedback = () => {
   const [captchaChecked, setCaptchaChecked] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const userEmail = "ahmad.resident@email.com"; // Auto-filled from session
+  const userEmail = "ahmad.resident@email.com";
+
+  const feedbackCategories = [
+    { value: "general", label: t("feedback.general") },
+    { value: "facility", label: t("feedback.facility") },
+    { value: "security", label: t("feedback.security") },
+    { value: "other", label: t("feedback.other") },
+  ];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast({
-          title: "File too large",
-          description: "Maximum file size is 5MB",
+          title: language === "ms" ? "Fail terlalu besar" : "File too large",
+          description: language === "ms" ? "Saiz maksimum ialah 5MB" : "Maximum file size is 5MB",
           variant: "destructive",
         });
         return;
       }
-      // Validate file type
       if (!["image/jpeg", "image/png", "application/pdf"].includes(file.type)) {
         toast({
-          title: "Invalid file type",
-          description: "Only JPG, PNG, and PDF files are allowed",
+          title: language === "ms" ? "Jenis fail tidak sah" : "Invalid file type",
+          description: language === "ms" ? "Hanya fail JPG, PNG, dan PDF dibenarkan" : "Only JPG, PNG, and PDF files are allowed",
           variant: "destructive",
         });
         return;
@@ -66,21 +65,19 @@ const Feedback = () => {
 
     if (!captchaChecked) {
       toast({
-        title: "Verification required",
-        description: "Please complete the security check",
+        title: language === "ms" ? "Pengesahan diperlukan" : "Verification required",
+        description: language === "ms" ? "Sila lengkapkan semakan keselamatan" : "Please complete the security check",
         variant: "destructive",
       });
       return;
     }
 
     setIsSubmitting(true);
-
-    // Simulate submission
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     toast({
-      title: "Feedback Submitted",
-      description: "Thank you! We'll respond within 3 working days.",
+      title: language === "ms" ? "Maklumbalas Dihantar" : "Feedback Submitted",
+      description: language === "ms" ? "Terima kasih! Kami akan membalas dalam 3 hari bekerja." : "Thank you! We'll respond within 3 working days.",
     });
 
     setIsSubmitting(false);
@@ -91,28 +88,29 @@ const Feedback = () => {
     <div className="max-w-2xl mx-auto">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground">
-          Submit Feedback or Complaint
+          {t("feedback.title")}
         </h1>
         <p className="text-muted-foreground mt-2">
-          Please fill out the form below. We aim to respond within 3 working
-          days.
+          {t("feedback.intro")}
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Feedback Form</CardTitle>
+          <CardTitle className="text-lg">
+            {language === "ms" ? "Borang Maklumbalas" : "Feedback Form"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Category */}
             <div className="space-y-2">
               <Label htmlFor="category">
-                Feedback Type <span className="text-destructive">*</span>
+                {t("feedback.type")} <span className="text-destructive">*</span>
               </Label>
               <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger id="category">
-                  <SelectValue placeholder="Select One" />
+                  <SelectValue placeholder={t("feedback.selectOne")} />
                 </SelectTrigger>
                 <SelectContent className="bg-popover">
                   {feedbackCategories.map((cat) => (
@@ -127,13 +125,13 @@ const Feedback = () => {
             {/* Subject */}
             <div className="space-y-2">
               <Label htmlFor="subject">
-                Subject <span className="text-destructive">*</span>
+                {t("feedback.subject")} <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="subject"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                placeholder="Enter a brief subject line"
+                placeholder={language === "ms" ? "Masukkan subjek ringkas" : "Enter a brief subject line"}
                 required
               />
             </div>
@@ -141,13 +139,13 @@ const Feedback = () => {
             {/* Details */}
             <div className="space-y-2">
               <Label htmlFor="details">
-                Description / Details <span className="text-destructive">*</span>
+                {t("feedback.details")} <span className="text-destructive">*</span>
               </Label>
               <Textarea
                 id="details"
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
-                placeholder="Please provide as much detail as possible..."
+                placeholder={language === "ms" ? "Sila berikan butiran sepenuhnya..." : "Please provide as much detail as possible..."}
                 rows={6}
                 required
               />
@@ -155,19 +153,12 @@ const Feedback = () => {
 
             {/* Attachment */}
             <div className="space-y-2">
-              <Label>Attach Photo/Document (Optional)</Label>
+              <Label>{t("feedback.attachment")}</Label>
               <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
                 {attachment ? (
                   <div className="flex items-center justify-center gap-3">
-                    <span className="text-sm text-foreground">
-                      {attachment.name}
-                    </span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setAttachment(null)}
-                    >
+                    <span className="text-sm text-foreground">{attachment.name}</span>
+                    <Button type="button" variant="ghost" size="sm" onClick={() => setAttachment(null)}>
                       <X className="w-4 h-4" />
                     </Button>
                   </div>
@@ -182,10 +173,10 @@ const Feedback = () => {
                     <div className="flex flex-col items-center gap-2">
                       <Upload className="w-8 h-8 text-muted-foreground" />
                       <span className="text-sm text-muted-foreground">
-                        Click to upload or drag and drop
+                        {language === "ms" ? "Klik untuk memuat naik" : "Click to upload"}
                       </span>
                       <span className="text-xs text-muted-foreground">
-                        Max 5MB, JPG/PNG/PDF only
+                        {t("feedback.maxSize")}
                       </span>
                     </div>
                   </label>
@@ -195,13 +186,8 @@ const Feedback = () => {
 
             {/* Contact Email (Auto-filled) */}
             <div className="space-y-2">
-              <Label htmlFor="email">Your Contact Email</Label>
-              <Input
-                id="email"
-                value={userEmail}
-                disabled
-                className="bg-muted text-muted-foreground"
-              />
+              <Label htmlFor="email">{t("feedback.contactEmail")}</Label>
+              <Input id="email" value={userEmail} disabled className="bg-muted text-muted-foreground" />
             </div>
 
             {/* CAPTCHA */}
@@ -210,35 +196,25 @@ const Feedback = () => {
                 <Checkbox
                   id="captcha"
                   checked={captchaChecked}
-                  onCheckedChange={(checked) =>
-                    setCaptchaChecked(checked as boolean)
-                  }
+                  onCheckedChange={(checked) => setCaptchaChecked(checked as boolean)}
                   className="border-primary data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                 />
                 <Label htmlFor="captcha" className="cursor-pointer">
-                  I am not a robot
+                  {t("feedback.captcha")}
                 </Label>
               </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                reCAPTCHA verification
-              </p>
+              <p className="text-xs text-muted-foreground mt-2">reCAPTCHA</p>
             </div>
 
             {/* Action Buttons */}
             <div className="flex items-center justify-between pt-4">
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-primary hover:bg-primary/90"
-              >
-                {isSubmitting ? "Submitting..." : "SUBMIT FEEDBACK"}
+              <Button type="submit" disabled={isSubmitting} className="bg-primary hover:bg-primary/90">
+                {isSubmitting 
+                  ? (language === "ms" ? "Menghantar..." : "Submitting...") 
+                  : t("feedback.submit")}
               </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => navigate("/dashboard")}
-              >
-                Cancel
+              <Button type="button" variant="ghost" onClick={() => navigate("/dashboard")}>
+                {t("feedback.cancel")}
               </Button>
             </div>
           </form>
