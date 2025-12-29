@@ -13,6 +13,8 @@ import ComplaintStructure from "./pages/ComplaintStructure";
 import ResidentGuidelines from "./pages/ResidentGuidelines";
 import SecurityFees from "./pages/SecurityFees";
 import Announcements from "./pages/Announcements";
+import ContactUs from "./pages/ContactUs";
+import AboutUs from "./pages/AboutUs";
 import DashboardLayout from "./layouts/DashboardLayout";
 import NotFound from "./pages/NotFound";
 
@@ -33,6 +35,8 @@ const App = () => (
               <Route path="/guide" element={<ResidentGuidelines />} />
               <Route path="/fees" element={<SecurityFees />} />
               <Route path="/announcements" element={<Announcements />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/about" element={<AboutUs />} />
               
               {/* Dashboard Routes */}
               <Route path="/dashboard" element={<DashboardLayout />}>

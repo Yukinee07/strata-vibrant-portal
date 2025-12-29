@@ -172,6 +172,16 @@ export const translations: Translations = {
   
   // Language
   "lang.toggle": { ms: "EN", en: "BM" },
+  
+  // Contact Us Page
+  "contact.title": { ms: "Hubungi Kami", en: "Contact Us" },
+  "contact.subtitle": { ms: "Kami sedia mendengar maklumbalas dan cadangan anda.", en: "We are ready to hear your feedback and suggestions." },
+  "contact.formTitle": { ms: "Borang Aduan / Cadangan / Penghargaan", en: "Complaint / Suggestion / Appreciation Form" },
+  "contact.scanInstruction": { ms: "Imbas kod QR untuk mengakses borang online atau isi borang di bawah.", en: "Scan the QR code to access the online form or fill the form below." },
+  "contact.onlineForm": { ms: "Borang Online", en: "Online Form" },
+  
+  // About Us Page
+  "about.title": { ms: "Tentang Kami", en: "About Us" },
 };
 
 interface LanguageContextType {

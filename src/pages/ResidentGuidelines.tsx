@@ -116,53 +116,62 @@ const ResidentGuidelines = () => {
               </h2>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-8 items-center max-w-5xl mx-auto">
-              {/* Form Preview & Download */}
-              <Card className="bg-card shadow-lg">
-                <CardContent className="p-6 text-center">
-                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-6 rounded-lg mb-6">
-                    <div className="bg-muted p-4 rounded border-2 border-dashed border-primary/30">
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {language === "ms" ? "JABATAN PENGUATKUASAAN" : "ENFORCEMENT DEPARTMENT"}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {language === "ms" 
-                          ? "Permohonan untuk menutup jalan dan memasang khemah bagi tujuan majlis perkahwinan, keagamaan dan lain-lain"
-                          : "Application to close road and set up tent for weddings, religious events, etc."}
-                      </p>
-                    </div>
-                  </div>
-                  <Button 
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                    onClick={() => window.open("https://drive.google.com/file/d/1keBfdp0o8zxeTSmWuFs4QDZqhbAAzTIB/view", "_blank")}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    {t("guide.download")}
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* QR Code */}
-              <Card className="bg-card shadow-lg">
-                <CardContent className="p-6 text-center">
-                  <p className="text-lg font-semibold text-foreground mb-4">
+            {/* QR Code & Download - Centered */}
+            <div className="flex flex-col items-center max-w-3xl mx-auto">
+              <Card className="bg-card shadow-lg w-full">
+                <CardContent className="p-8 flex flex-col items-center text-center">
+                  <p className="text-lg font-semibold text-foreground mb-6">
                     {t("guide.scanQR")}
                   </p>
-                  <div className="bg-white p-4 rounded-lg inline-block">
+                  <div className="bg-white p-6 rounded-lg shadow-md mb-6">
                     <img 
                       src={qrTatacara} 
                       alt="QR Code for online form" 
-                      className="w-48 h-48 object-contain"
+                      className="w-64 h-64 md:w-80 md:h-80 object-contain"
                     />
                   </div>
-                  <Button 
-                    variant="outline"
-                    className="mt-4 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                    onClick={() => window.open("https://docs.google.com/forms/d/e/1FAIpQLSeseUdDDzZeTGtPBuhgZ-0wLh59UUvuYM0BcwyyQvXYPuxvrA/viewform", "_blank")}
-                  >
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    {t("guide.goToForm")}
-                  </Button>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button 
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                      onClick={() => window.open("https://drive.google.com/file/d/1keBfdp0o8zxeTSmWuFs4QDZqhbAAzTIB/view", "_blank")}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      {t("guide.download")}
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                      onClick={() => window.open("https://docs.google.com/forms/d/e/1FAIpQLSeseUdDDzZeTGtPBuhgZ-0wLh59UUvuYM0BcwyyQvXYPuxvrA/viewform", "_blank")}
+                    >
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      {t("guide.goToForm")}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Embedded Google Form */}
+            <div className="mt-8 max-w-4xl mx-auto">
+              <Card className="bg-card shadow-lg">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold text-primary text-center mb-6">
+                    {language === "ms" ? "Borang Online" : "Online Form"}
+                  </h3>
+                  <div className="w-full overflow-hidden rounded-lg">
+                    <iframe
+                      src="https://docs.google.com/forms/d/e/1FAIpQLSeseUdDDzZeTGtPBuhgZ-0wLh59UUvuYM0BcwyyQvXYPuxvrA/viewform?embedded=true"
+                      width="100%"
+                      height="600"
+                      frameBorder="0"
+                      marginHeight={0}
+                      marginWidth={0}
+                      title="Council Procedures Form"
+                      className="bg-white rounded-lg"
+                    >
+                      {language === "ms" ? "Memuatkan…" : "Loading…"}
+                    </iframe>
+                  </div>
                 </CardContent>
               </Card>
             </div>
