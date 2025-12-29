@@ -151,30 +151,6 @@ const ResidentGuidelines = () => {
               </Card>
             </div>
 
-            {/* Embedded Google Form */}
-            <div className="mt-8 max-w-4xl mx-auto">
-              <Card className="bg-card shadow-lg">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-primary text-center mb-6">
-                    {language === "ms" ? "Borang Online" : "Online Form"}
-                  </h3>
-                  <div className="w-full overflow-hidden rounded-lg">
-                    <iframe
-                      src="https://docs.google.com/forms/d/e/1FAIpQLSeseUdDDzZeTGtPBuhgZ-0wLh59UUvuYM0BcwyyQvXYPuxvrA/viewform?embedded=true"
-                      width="100%"
-                      height="600"
-                      frameBorder="0"
-                      marginHeight={0}
-                      marginWidth={0}
-                      title="Council Procedures Form"
-                      className="bg-white rounded-lg"
-                    >
-                      {language === "ms" ? "Memuatkan…" : "Loading…"}
-                    </iframe>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </section>
 

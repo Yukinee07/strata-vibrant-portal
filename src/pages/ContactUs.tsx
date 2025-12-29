@@ -1,7 +1,9 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ExternalLink } from "lucide-react";
 import qrAduanCadangan from "@/assets/qr-aduan-cadangan.png";
 
 const ContactUs = () => {
@@ -30,7 +32,7 @@ const ContactUs = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
               {/* QR Code Card */}
-              <Card className="bg-card shadow-lg mb-8">
+              <Card className="bg-card shadow-lg">
                 <CardHeader className="text-center">
                   <CardTitle className="text-2xl text-primary">
                     {t("contact.formTitle")}
@@ -47,36 +49,18 @@ const ContactUs = () => {
                       className="w-64 h-64 md:w-80 md:h-80 object-contain"
                     />
                   </div>
-                  <p className="text-sm text-muted-foreground text-center">
+                  <Button 
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                    onClick={() => window.open("https://docs.google.com/forms/d/e/1FAIpQLSfc_rtuEJTd0DFIiznl8t66rn7fi3fw7jcx3qScs74mudDQBg/viewform", "_blank")}
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    {t("contact.fillForm")}
+                  </Button>
+                  <p className="text-sm text-muted-foreground text-center mt-6">
                     {language === "ms" 
                       ? "Persatuan Penduduk The Strata Bandar Puteri Bangi" 
                       : "The Strata Bandar Puteri Bangi Residents' Association"}
                   </p>
-                </CardContent>
-              </Card>
-
-              {/* Embedded Google Form */}
-              <Card className="bg-card shadow-lg">
-                <CardHeader className="text-center">
-                  <CardTitle className="text-2xl text-primary">
-                    {t("contact.onlineForm")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="w-full overflow-hidden rounded-lg">
-                    <iframe
-                      src="https://docs.google.com/forms/d/e/1FAIpQLSfc_rtuEJTd0DFIiznl8t66rn7fi3fw7jcx3qScs74mudDQBg/viewform?embedded=true"
-                      width="100%"
-                      height="800"
-                      frameBorder="0"
-                      marginHeight={0}
-                      marginWidth={0}
-                      title={t("contact.formTitle")}
-                      className="bg-white rounded-lg"
-                    >
-                      {language === "ms" ? "Memuatkan…" : "Loading…"}
-                    </iframe>
-                  </div>
                 </CardContent>
               </Card>
             </div>
