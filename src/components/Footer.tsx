@@ -1,9 +1,9 @@
-import { Building2, Mail, Phone, MapPin } from "lucide-react";
+import { Building2, Mail, Phone, MapPin, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <footer className="bg-primary text-primary-foreground">
@@ -91,10 +91,19 @@ const Footer = () => {
       {/* Copyright Bar */}
       <div className="border-t border-primary-foreground/20">
         <div className="container mx-auto px-4 py-4">
-          <p className="text-center text-primary-foreground/60 text-sm">
-            © {new Date().getFullYear()} Persatuan Penduduk The Strata Bandar
-            Puteri Bangi. {t("footer.copyright")}.
-          </p>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+            <p className="text-primary-foreground/60 text-sm">
+              © {new Date().getFullYear()} Persatuan Penduduk The Strata Bandar
+              Puteri Bangi. {t("footer.copyright")}.
+            </p>
+            <Link
+              to="/developer-login"
+              className="flex items-center gap-1.5 text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors text-xs"
+            >
+              <Code className="w-3 h-3" />
+              {language === "ms" ? "Log Masuk Pembangun" : "Developer Login"}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

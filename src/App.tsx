@@ -6,8 +6,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "@/components/ScrollToTop";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { DeveloperProvider } from "@/contexts/DeveloperContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import DeveloperLogin from "./pages/DeveloperLogin";
 import Dashboard from "./pages/Dashboard";
 import Feedback from "./pages/Feedback";
 import ComplaintStructure from "./pages/ComplaintStructure";
@@ -25,32 +27,35 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/complaint" element={<ComplaintStructure />} />
-              <Route path="/guide" element={<ResidentGuidelines />} />
-              <Route path="/fees" element={<SecurityFees />} />
-              <Route path="/announcements" element={<Announcements />} />
-              <Route path="/contact" element={<ContactUs />} />
-              <Route path="/about" element={<AboutUs />} />
-              
-              {/* Dashboard Routes */}
-              <Route path="/dashboard" element={<DashboardLayout />}>
-                <Route index element={<Dashboard />} />
-                <Route path="feedback" element={<Feedback />} />
-              </Route>
+        <DeveloperProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/developer-login" element={<DeveloperLogin />} />
+                <Route path="/complaint" element={<ComplaintStructure />} />
+                <Route path="/guide" element={<ResidentGuidelines />} />
+                <Route path="/fees" element={<SecurityFees />} />
+                <Route path="/announcements" element={<Announcements />} />
+                <Route path="/contact" element={<ContactUs />} />
+                <Route path="/about" element={<AboutUs />} />
+                
+                {/* Dashboard Routes */}
+                <Route path="/dashboard" element={<DashboardLayout />}>
+                  <Route index element={<Dashboard />} />
+                  <Route path="feedback" element={<Feedback />} />
+                </Route>
 
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </DeveloperProvider>
       </LanguageProvider>
     </ThemeProvider>
   </QueryClientProvider>
