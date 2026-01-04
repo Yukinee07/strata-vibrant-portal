@@ -1,6 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
@@ -10,10 +11,11 @@ const ContactUs = () => {
   const { t, language } = useLanguage();
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <Header />
-      
-      <main className="flex-grow">
+    <PageTransition>
+      <div className="min-h-screen flex flex-col bg-background">
+        <Header />
+        
+        <main className="flex-grow">
         {/* Page Title Section */}
         <section className="py-12 bg-background">
           <div className="container mx-auto px-4 text-center">
@@ -66,10 +68,11 @@ const ContactUs = () => {
             </div>
           </div>
         </section>
-      </main>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </PageTransition>
   );
 };
 

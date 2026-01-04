@@ -1,6 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Target, Shield, Heart, Download, CheckCircle } from "lucide-react";
@@ -61,8 +62,9 @@ const AboutUs = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <Header />
+    <PageTransition>
+      <div className="min-h-screen flex flex-col bg-background">
+        <Header />
       
       <main className="flex-grow">
         {/* Hero Section */}
@@ -374,10 +376,11 @@ const AboutUs = () => {
             </div>
           </div>
         </section>
-      </main>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </PageTransition>
   );
 };
 
