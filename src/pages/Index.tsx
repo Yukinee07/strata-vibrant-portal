@@ -58,7 +58,7 @@ const Index = () => {
                   {announcements.map((item, index) => (
                     <article
                       key={index}
-                      className="bg-card rounded-lg p-6 border-l-4 border-accent shadow-sm hover:shadow-md transition-shadow duration-300"
+                      className="bg-card rounded-lg p-6 border-l-4 border-accent shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-primary transition-all duration-300 cursor-pointer"
                     >
                       <div className="flex items-start gap-4">
                         <div className="bg-accent text-accent-foreground px-3 py-2 rounded text-sm font-semibold whitespace-nowrap shrink-0">
