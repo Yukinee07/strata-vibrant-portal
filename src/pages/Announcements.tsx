@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { FileText, ExternalLink } from "lucide-react";
@@ -55,9 +56,10 @@ const Announcements = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-grow bg-background">
+    <PageTransition>
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow bg-background">
         {/* Hero Banner */}
         <section className="relative">
           <img
@@ -145,9 +147,10 @@ const Announcements = () => {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </PageTransition>
   );
 };
 

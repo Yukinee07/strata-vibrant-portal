@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import AnnouncementsCarousel from "@/components/AnnouncementsCarousel";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
 import { Book, Download, Phone, Mail, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -35,8 +36,9 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <PageTransition>
+      <div className="min-h-screen flex flex-col">
+        <Header />
       <main className="flex-grow">
         <HeroSection />
         <AnnouncementsCarousel />
@@ -143,8 +145,9 @@ const Index = () => {
           </div>
         </section>
       </main>
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </PageTransition>
   );
 };
 

@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const ComplaintStructure = () => {
@@ -41,9 +42,10 @@ const ComplaintStructure = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-grow bg-secondary">
+    <PageTransition>
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow bg-secondary">
         {/* Page Title */}
         <div className="bg-background py-12">
           <div className="container mx-auto px-4 text-center">
@@ -130,9 +132,10 @@ const ComplaintStructure = () => {
             PERSATUAN PENDUDUK THE STRATA BANDAR PUTERI BANGI
           </p>
         </div>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </PageTransition>
   );
 };
 

@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Download, Mail, ExternalLink } from "lucide-react";
@@ -8,9 +9,10 @@ const SecurityFees = () => {
   const { t, language } = useLanguage();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-grow bg-background">
+    <PageTransition>
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow bg-background">
         {/* Hero Section */}
         <section className="bg-primary py-12 md:py-16">
           <div className="container mx-auto px-4 text-center">
@@ -115,9 +117,10 @@ const SecurityFees = () => {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </PageTransition>
   );
 };
 
