@@ -1,16 +1,28 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Search, Moon, Sun, Languages } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, Search, Moon, Sun, Languages, User, LogOut, Settings } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useDeveloper } from "@/contexts/DeveloperContext";
 import logoPersatuan from "@/assets/logo-persatuan.png";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const { isDeveloper, logout } = useDeveloper();
 
   const navLinks = [
     { name: t("nav.about"), href: "/about" },
@@ -22,18 +34,70 @@ const Header = () => {
 
   const isActive = (href: string) => location.pathname === href;
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <img 
-              src={logoPersatuan} 
-              alt="Persatuan Penduduk The Strata Bandar Puteri Bangi" 
-              className="h-12 md:h-14 w-auto object-contain"
-            />
-          </Link>
+          {/* Left Side - Logo + Login/Profile */}
+          <div className="flex items-center gap-4">
+            <Link to="/" className="flex items-center gap-3">
+              <img 
+                src={logoPersatuan} 
+                alt="Persatuan Penduduk The Strata Bandar Puteri Bangi" 
+                className="h-12 md:h-14 w-auto object-contain"
+              />
+            </Link>
+
+            {/* Login/Profile Button */}
+            {isDeveloper ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Avatar className="h-10 w-10 border-2 border-primary">
+                      <AvatarFallback className="bg-primary text-primary-foreground">
+                        <User className="h-5 w-5" />
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="start" forceMount>
+                  <div className="flex items-center justify-start gap-2 p-2">
+                    <div className="flex flex-col space-y-1 leading-none">
+                      <p className="font-medium">Developer</p>
+                      <p className="text-xs text-muted-foreground">
+                        {language === "ms" ? "Mod Pembangun Aktif" : "Developer Mode Active"}
+                      </p>
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>{language === "ms" ? "Tetapan Profil" : "Profile Settings"}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>{language === "ms" ? "Log Keluar" : "Logout"}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden sm:flex gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                onClick={() => navigate("/login")}
+              >
+                <User className="h-4 w-4" />
+                {language === "ms" ? "Log Masuk" : "Login"}
+              </Button>
+            )}
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-6">
@@ -98,6 +162,40 @@ const Header = () => {
         {mobileMenuOpen && (
           <div className="lg:hidden py-4 border-t border-border animate-fade-in">
             <nav className="flex flex-col gap-4">
+              {/* Mobile Login/Profile */}
+              {isDeveloper ? (
+                <div className="flex items-center justify-between py-2 px-2 bg-primary/10 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-8 w-8 border border-primary">
+                      <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                        <User className="h-4 w-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium">Developer</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleLogout}
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="outline"
+                  className="justify-start gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                  onClick={() => {
+                    navigate("/login");
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <User className="h-4 w-4" />
+                  {language === "ms" ? "Log Masuk" : "Login"}
+                </Button>
+              )}
+
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
