@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Building2, Lock, Mail, Moon, Sun, Languages } from "lucide-react";
+import { Eye, EyeOff, Building2, Lock, Mail, Moon, Sun, Languages, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,19 +8,35 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useDeveloper } from "@/contexts/DeveloperContext";
+import { toast } from "sonner";
 import heroImage from "@/assets/hero-building.jpg";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const { login } = useDeveloper();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check if credentials match Developer
+    if (username === "Developer" && password === "Developer") {
+      const success = login(username, password);
+      if (success) {
+        toast.success(language === "ms" ? "Log masuk pembangun berjaya!" : "Developer login successful!");
+        navigate("/dashboard");
+        return;
+      }
+    }
+    
+    // Regular user login (for now just navigate to dashboard)
+    toast.success(language === "ms" ? "Log masuk berjaya!" : "Login successful!");
     navigate("/dashboard");
   };
 
@@ -91,15 +107,15 @@ const Login = () => {
 
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email">{t("login.email")}</Label>
+                <Label htmlFor="username">{language === "ms" ? "Nama Pengguna" : "Username"}</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder={language === "ms" ? "Masukkan e-mel anda" : "Enter your email"}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="username"
+                    type="text"
+                    placeholder={language === "ms" ? "Masukkan nama pengguna" : "Enter your username"}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     className="pl-10 h-12 border-input focus:border-primary focus:ring-primary"
                   />
                 </div>

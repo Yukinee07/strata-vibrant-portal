@@ -4,10 +4,11 @@ import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import DeveloperBanner from "@/components/DeveloperBanner";
 import AnnouncementManager from "@/components/AnnouncementManager";
+import MeetingLocationEditor from "@/components/MeetingLocationEditor";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useDeveloper } from "@/contexts/DeveloperContext";
 import { Button } from "@/components/ui/button";
-import { FileText, ExternalLink } from "lucide-react";
+import { FileText, ExternalLink, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import bannerAGM from "@/assets/banner-agm-2024.jpg";
 import mapAGM from "@/assets/map-agm-location.png";
@@ -25,6 +26,16 @@ const Announcements = () => {
   const { t, language } = useLanguage();
   const { isDeveloper } = useDeveloper();
   const [dbAnnouncements, setDbAnnouncements] = useState<DbAnnouncement[]>([]);
+  
+  // Meeting location state (in-memory for developer editing)
+  const [meetingLocation, setMeetingLocation] = useState({
+    title: language === "ms" ? "Lokasi AGM" : "AGM Location",
+    description: language === "ms"
+      ? "Dewan MAPIM, Atas Restoran Al-Araby Mathaam Bandar Puteri Bangi"
+      : "MAPIM Hall, Above Al-Araby Mathaam Restaurant Bandar Puteri Bangi",
+    mapUrl: "https://maps.google.com",
+    imageUrl: "",
+  });
 
   // Static documents (existing ones)
   const staticDocuments = [
@@ -198,21 +209,41 @@ const Announcements = () => {
 
               {/* Location Map */}
               <div className="mt-12">
-                <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">
-                  {t("announcements.location")}
-                </h2>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl md:text-2xl font-bold text-foreground flex items-center gap-2">
+                    <MapPin className="w-6 h-6 text-primary" />
+                    {t("announcements.location")}
+                  </h2>
+                  <MeetingLocationEditor
+                    currentLocation={meetingLocation}
+                    onLocationChange={setMeetingLocation}
+                  />
+                </div>
                 <div className="rounded-xl overflow-hidden border border-border shadow-sm">
                   <img
-                    src={mapAGM}
+                    src={meetingLocation.imageUrl || mapAGM}
                     alt={language === "ms" ? "Lokasi AGM - Al-Araby Mathaam" : "AGM Location - Al-Araby Mathaam"}
                     className="w-full h-auto"
                   />
                 </div>
                 <p className="text-muted-foreground text-sm mt-3 text-center">
-                  {language === "ms"
-                    ? "Dewan MAPIM, Atas Restoran Al-Araby Mathaam Bandar Puteri Bangi"
-                    : "MAPIM Hall, Above Al-Araby Mathaam Restaurant Bandar Puteri Bangi"}
+                  {meetingLocation.description}
                 </p>
+                {meetingLocation.mapUrl && meetingLocation.mapUrl !== "https://maps.google.com" && (
+                  <div className="text-center mt-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-2"
+                      asChild
+                    >
+                      <a href={meetingLocation.mapUrl} target="_blank" rel="noopener noreferrer">
+                        <MapPin className="w-4 h-4" />
+                        {language === "ms" ? "Buka di Google Maps" : "Open in Google Maps"}
+                      </a>
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </section>
