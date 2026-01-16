@@ -14,7 +14,7 @@ const DashboardSidebar = () => {
   ];
 
   return (
-    <aside className="w-64 bg-primary min-h-screen flex flex-col">
+    <aside className="w-64 bg-primary h-full min-h-screen flex flex-col">
       {/* Logo */}
       <div className="p-6 border-b border-primary-foreground/20">
         <Link to="/dashboard" className="flex items-center gap-3">

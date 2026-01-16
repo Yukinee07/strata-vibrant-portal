@@ -366,7 +366,7 @@ const Login = () => {
       {/* Left side - Green panel (comes second in DOM but visually first on desktop) */}
       <div className="hidden lg:flex lg:w-1/2 bg-primary relative overflow-hidden order-2 lg:order-1">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-primary-foreground/20" />
-        <div className="relative z-10 flex flex-col justify-end items-center w-full p-12 text-primary-foreground pb-20">
+        <div className="relative z-10 flex flex-col justify-center items-center w-full p-12 text-primary-foreground">
           <div className="max-w-md text-center">
             <h1 className="text-4xl font-bold mb-6">
               {language === "ms" ? "Selamat Datang" : "Welcome Back"}
