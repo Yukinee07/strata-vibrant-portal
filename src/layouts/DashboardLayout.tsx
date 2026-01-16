@@ -20,7 +20,7 @@ const DashboardLayout = () => {
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 lg:relative lg:transform-none",
+          "fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 lg:relative lg:transform-none lg:flex-shrink-0",
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
