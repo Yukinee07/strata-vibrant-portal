@@ -119,9 +119,15 @@ export const translations: Translations = {
   // Login
   "login.title": { ms: "Log Masuk Portal Penduduk", en: "Resident Portal Login" },
   "login.email": { ms: "Nama Pengguna atau E-mel", en: "Username or Email" },
+  "login.emailPlaceholder": { ms: "Masukkan e-mel anda", en: "Enter your email" },
   "login.password": { ms: "Kata Laluan", en: "Password" },
-  "login.remember": { ms: "Ingat Saya", en: "Remember Me" },
-  "login.forgot": { ms: "Lupa Kata Laluan?", en: "Forgot Password?" },
+  "login.passwordPlaceholder": { ms: "Masukkan kata laluan anda", en: "Enter your password" },
+  "login.rememberMe": { ms: "Ingat Saya", en: "Remember Me" },
+  "login.forgotPassword": { ms: "Lupa Kata Laluan?", en: "Forgot Password?" },
+  "login.signIn": { ms: "Log Masuk", en: "Sign In" },
+  "login.processing": { ms: "Memproses...", en: "Processing..." },
+  "login.success": { ms: "Berjaya log masuk!", en: "Successfully signed in!" },
+  "login.error": { ms: "Log masuk gagal", en: "Sign in failed" },
   "login.submit": { ms: "LOG MASUK SELAMAT", en: "SECURE LOGIN" },
   "login.noAccount": { ms: "Belum mempunyai akaun? Hubungi Pejabat Pengurusan.", en: "Don't have an account yet? Contact the Management Office." },
   

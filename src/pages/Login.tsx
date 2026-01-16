@@ -10,6 +10,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Eye, EyeOff, Sun, Moon, Home, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const Login = () => {
   const { t, language, setLanguage } = useLanguage();
@@ -33,6 +40,11 @@ const Login = () => {
   const [showSignUpPassword, setShowSignUpPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSignUpLoading, setIsSignUpLoading] = useState(false);
+
+  // Forgot Password state
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [isForgotLoading, setIsForgotLoading] = useState(false);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,17 +74,17 @@ const Login = () => {
     e.preventDefault();
     
     if (!signUpFullName.trim()) {
-      toast.error("Please enter your full name");
+      toast.error(language === "ms" ? "Sila masukkan nama penuh anda" : "Please enter your full name");
       return;
     }
 
     if (signUpPassword !== signUpConfirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error(language === "ms" ? "Kata laluan tidak sepadan" : "Passwords do not match");
       return;
     }
 
     if (signUpPassword.length < 6) {
-      toast.error("Password must be at least 6 characters");
+      toast.error(language === "ms" ? "Kata laluan mesti sekurang-kurangnya 6 aksara" : "Password must be at least 6 characters");
       return;
     }
 
@@ -80,36 +92,36 @@ const Login = () => {
 
     try {
       await signUp(signUpEmail, signUpPassword, signUpFullName);
-      toast.success("Account created successfully! You are now signed in.");
+      toast.success(language === "ms" ? "Akaun berjaya dicipta! Anda kini telah log masuk." : "Account created successfully! You are now signed in.");
       navigate("/");
     } catch (error: any) {
-      toast.error(error.message || "Sign up failed");
+      toast.error(error.message || (language === "ms" ? "Pendaftaran gagal" : "Sign up failed"));
     } finally {
       setIsSignUpLoading(false);
     }
   };
 
-  return (
-    <div className="min-h-screen flex">
-      {/* Left side - Image */}
-      <div className="hidden lg:flex lg:w-1/2 bg-primary relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-primary-foreground/20" />
-        <div className="relative z-10 flex flex-col justify-center items-center w-full p-12 text-primary-foreground">
-          <div className="max-w-md text-center">
-            <h1 className="text-4xl font-bold mb-6">
-              {language === "ms" ? "Selamat Datang" : "Welcome Back"}
-            </h1>
-            <p className="text-lg opacity-90">
-              {language === "ms"
-                ? "Log masuk untuk mengakses portal penduduk anda"
-                : "Sign in to access your resident portal"}
-            </p>
-          </div>
-        </div>
-      </div>
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!forgotEmail.trim()) {
+      toast.error(language === "ms" ? "Sila masukkan e-mel anda" : "Please enter your email");
+      return;
+    }
+    setIsForgotLoading(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    toast.success(language === "ms" 
+      ? "Pautan reset kata laluan telah dihantar ke e-mel anda" 
+      : "Password reset link has been sent to your email");
+    setShowForgotPassword(false);
+    setForgotEmail("");
+    setIsForgotLoading(false);
+  };
 
-      {/* Right side - Form */}
-      <div className="w-full lg:w-1/2 flex flex-col">
+  return (
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      {/* Right side - Form (comes first in DOM for mobile, but visually second on desktop) */}
+      <div className="w-full lg:w-1/2 flex flex-col order-1 lg:order-2 min-h-screen lg:min-h-0">
         {/* Top bar with theme and language toggle */}
         <div className="flex justify-between items-center p-4">
           <Link
@@ -173,7 +185,7 @@ const Login = () => {
                     <Input
                       id="email"
                       type="text"
-                      placeholder={t("login.emailPlaceholder")}
+                      placeholder={language === "ms" ? "Masukkan e-mel anda" : "Enter your email"}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -189,7 +201,7 @@ const Login = () => {
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
-                        placeholder={t("login.passwordPlaceholder")}
+                        placeholder={language === "ms" ? "Masukkan kata laluan anda" : "Enter your password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -225,12 +237,13 @@ const Login = () => {
                         {t("login.rememberMe")}
                       </label>
                     </div>
-                    <a
-                      href="#"
+                    <button
+                      type="button"
+                      onClick={() => setShowForgotPassword(true)}
                       className="text-sm text-primary hover:underline"
                     >
                       {t("login.forgotPassword")}
-                    </a>
+                    </button>
                   </div>
 
                   <Button
@@ -255,7 +268,7 @@ const Login = () => {
                     <Input
                       id="fullName"
                       type="text"
-                      placeholder={language === "ms" ? "Masukkan nama penuh" : "Enter your full name"}
+                      placeholder={language === "ms" ? "Masukkan nama penuh anda" : "Enter your full name"}
                       value={signUpFullName}
                       onChange={(e) => setSignUpFullName(e.target.value)}
                       required
@@ -270,7 +283,7 @@ const Login = () => {
                     <Input
                       id="signUpEmail"
                       type="email"
-                      placeholder={t("login.emailPlaceholder")}
+                      placeholder={language === "ms" ? "Masukkan e-mel anda" : "Enter your email"}
                       value={signUpEmail}
                       onChange={(e) => setSignUpEmail(e.target.value)}
                       required
@@ -349,6 +362,74 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* Left side - Green panel (comes second in DOM but visually first on desktop) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-primary relative overflow-hidden order-2 lg:order-1">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-primary-foreground/20" />
+        <div className="relative z-10 flex flex-col justify-end items-center w-full p-12 text-primary-foreground pb-20">
+          <div className="max-w-md text-center">
+            <h1 className="text-4xl font-bold mb-6">
+              {language === "ms" ? "Selamat Datang" : "Welcome Back"}
+            </h1>
+            <p className="text-lg opacity-90">
+              {language === "ms"
+                ? "Log masuk untuk mengakses portal penduduk anda"
+                : "Sign in to access your resident portal"}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Forgot Password Dialog */}
+      <Dialog open={showForgotPassword} onOpenChange={setShowForgotPassword}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>
+              {language === "ms" ? "Lupa Kata Laluan?" : "Forgot Password?"}
+            </DialogTitle>
+            <DialogDescription>
+              {language === "ms" 
+                ? "Masukkan e-mel anda dan kami akan menghantar pautan untuk menetapkan semula kata laluan anda."
+                : "Enter your email and we'll send you a link to reset your password."}
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleForgotPassword} className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="forgotEmail" className="text-sm font-medium text-foreground">
+                {language === "ms" ? "E-mel" : "Email"}
+              </label>
+              <Input
+                id="forgotEmail"
+                type="email"
+                placeholder={language === "ms" ? "Masukkan e-mel anda" : "Enter your email"}
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+                required
+                className="h-11"
+              />
+            </div>
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                className="flex-1"
+                onClick={() => setShowForgotPassword(false)}
+              >
+                {language === "ms" ? "Batal" : "Cancel"}
+              </Button>
+              <Button
+                type="submit"
+                className="flex-1"
+                disabled={isForgotLoading}
+              >
+                {isForgotLoading 
+                  ? (language === "ms" ? "Menghantar..." : "Sending...")
+                  : (language === "ms" ? "Hantar Pautan" : "Send Link")}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
