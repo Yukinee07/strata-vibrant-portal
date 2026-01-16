@@ -1,41 +1,10 @@
-import { Link } from "react-router-dom";
-import { ArrowRight, CreditCard, CheckCircle, AlertCircle } from "lucide-react";
+import { CheckCircle, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Dashboard = () => {
   const { t, language } = useLanguage();
-
-  const recentTransactions = [
-    {
-      date: "01/10/25",
-      description: language === "ms" ? "Yuran Keselamatan Oktober" : "October Security Fee",
-      amount: "RM150.00",
-      status: "paid",
-    },
-    {
-      date: "01/09/25",
-      description: language === "ms" ? "Yuran Keselamatan September" : "September Security Fee",
-      amount: "RM150.00",
-      status: "paid",
-    },
-    {
-      date: "01/08/25",
-      description: language === "ms" ? "Yuran Keselamatan Ogos" : "August Security Fee",
-      amount: "RM150.00",
-      status: "paid",
-    },
-  ];
 
   return (
     <div className="space-y-8">
@@ -50,7 +19,7 @@ const Dashboard = () => {
       </div>
 
       {/* Status Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Outstanding Levy Card */}
         <Card className="border-l-4 border-l-accent">
           <CardHeader className="pb-2">
@@ -85,64 +54,36 @@ const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
-
-        {/* Quick Action Card */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <CreditCard className="w-4 h-4" />
-              {t("dashboard.totalPaid")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-foreground">RM 1,350.00</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              {language === "ms" ? "9 pembayaran selesai" : "9 payments completed"}
-            </p>
-          </CardContent>
-        </Card>
       </div>
 
-      {/* Recent Transactions */}
+      {/* Quick Info Card */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader>
           <CardTitle className="text-lg font-semibold">
-            {t("dashboard.recentTrans")}
+            {language === "ms" ? "Maklumat Ringkas" : "Quick Information"}
           </CardTitle>
-          <Link
-            to="/dashboard/payments"
-            className="text-sm text-primary font-medium hover:underline flex items-center gap-1"
-          >
-            {t("dashboard.viewHistory")} <ArrowRight className="w-4 h-4" />
-          </Link>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{t("dashboard.date")}</TableHead>
-                <TableHead>{t("dashboard.description")}</TableHead>
-                <TableHead>{t("dashboard.amount")}</TableHead>
-                <TableHead className="text-right">Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {recentTransactions.map((transaction, index) => (
-                <TableRow key={index}>
-                  <TableCell className="text-muted-foreground">
-                    {transaction.date}
-                  </TableCell>
-                  <TableCell>{transaction.description}</TableCell>
-                  <TableCell>{transaction.amount}</TableCell>
-                  <TableCell className="text-right">
-                    <Badge variant="default" className="bg-primary text-primary-foreground">
-                      {t("dashboard.paid")}
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 bg-secondary rounded-lg">
+              <p className="text-sm text-muted-foreground">
+                {language === "ms" ? "No. Ahli" : "Member ID"}
+              </p>
+              <p className="text-lg font-semibold text-foreground">STR-2024-0123</p>
+            </div>
+            <div className="p-4 bg-secondary rounded-lg">
+              <p className="text-sm text-muted-foreground">
+                {language === "ms" ? "No. Unit" : "Unit Number"}
+              </p>
+              <p className="text-lg font-semibold text-foreground">A-12-03</p>
+            </div>
+            <div className="p-4 bg-secondary rounded-lg">
+              <p className="text-sm text-muted-foreground">
+                {language === "ms" ? "Tarikh Daftar" : "Registration Date"}
+              </p>
+              <p className="text-lg font-semibold text-foreground">15 Jan 2024</p>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

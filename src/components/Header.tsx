@@ -10,10 +10,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useDeveloper } from "@/contexts/DeveloperContext";
+import { useAuth } from "@/contexts/AuthContext";
 import logoPersatuan from "@/assets/logo-persatuan.png";
 
 const Header = () => {
@@ -22,7 +23,10 @@ const Header = () => {
   const navigate = useNavigate();
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const { isDeveloper, logout } = useDeveloper();
+  const { isDeveloper, logout: developerLogout } = useDeveloper();
+  const { user, profile, signOut } = useAuth();
+
+  const isLoggedIn = isDeveloper || !!user;
 
   const navLinks = [
     { name: t("nav.about"), href: "/about" },
@@ -34,9 +38,23 @@ const Header = () => {
 
   const isActive = (href: string) => location.pathname === href;
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    if (isDeveloper) {
+      developerLogout();
+    } else {
+      await signOut();
+    }
     navigate("/");
+  };
+
+  const getDisplayName = () => {
+    if (isDeveloper) return "Developer";
+    return profile?.full_name || user?.email?.split("@")[0] || "User";
+  };
+
+  const getInitial = () => {
+    const name = getDisplayName();
+    return name.charAt(0).toUpperCase();
   };
 
   return (
@@ -54,13 +72,14 @@ const Header = () => {
             </Link>
 
             {/* Login/Profile Button */}
-            {isDeveloper ? (
+            {isLoggedIn ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                     <Avatar className="h-10 w-10 border-2 border-primary">
+                      <AvatarImage src={profile?.avatar_url || undefined} />
                       <AvatarFallback className="bg-primary text-primary-foreground">
-                        <User className="h-5 w-5" />
+                        {getInitial()}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -68,14 +87,16 @@ const Header = () => {
                 <DropdownMenuContent className="w-56" align="start" forceMount>
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">Developer</p>
+                      <p className="font-medium">{getDisplayName()}</p>
                       <p className="text-xs text-muted-foreground">
-                        {language === "ms" ? "Mod Pembangun Aktif" : "Developer Mode Active"}
+                        {isDeveloper 
+                          ? (language === "ms" ? "Mod Pembangun Aktif" : "Developer Mode Active")
+                          : (user?.email || "")}
                       </p>
                     </div>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+                  <DropdownMenuItem onClick={() => navigate("/dashboard/profile")}>
                     <Settings className="mr-2 h-4 w-4" />
                     <span>{language === "ms" ? "Tetapan Profil" : "Profile Settings"}</span>
                   </DropdownMenuItem>
@@ -163,15 +184,16 @@ const Header = () => {
           <div className="lg:hidden py-4 border-t border-border animate-fade-in">
             <nav className="flex flex-col gap-4">
               {/* Mobile Login/Profile */}
-              {isDeveloper ? (
+              {isLoggedIn ? (
                 <div className="flex items-center justify-between py-2 px-2 bg-primary/10 rounded-lg">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-8 w-8 border border-primary">
+                      <AvatarImage src={profile?.avatar_url || undefined} />
                       <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                        <User className="h-4 w-4" />
+                        {getInitial()}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="text-sm font-medium">Developer</span>
+                    <span className="text-sm font-medium">{getDisplayName()}</span>
                   </div>
                   <Button
                     variant="ghost"
