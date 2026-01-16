@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useDeveloper } from "@/contexts/DeveloperContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Eye, EyeOff, Sun, Moon, Home, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,11 +17,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { z } from "zod";
+
+// Validation schemas
+const emailSchema = z.string().trim().email("Invalid email address").max(255);
+const passwordSchema = z.string().min(6, "Password must be at least 6 characters").max(128);
+const nameSchema = z.string().trim().min(1, "Name is required").max(100);
 
 const Login = () => {
   const { t, language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const { login: developerLogin } = useDeveloper();
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
@@ -50,19 +55,36 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Check for Developer login
-    if (email === "Developer" && password === "Developer") {
-      developerLogin(email, password);
-      toast.success("Developer mode activated");
-      navigate("/dashboard");
+    // Validate email
+    const emailResult = emailSchema.safeParse(email);
+    if (!emailResult.success) {
+      toast.error(language === "ms" ? "Alamat e-mel tidak sah" : "Invalid email address");
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate password
+    const passwordResult = passwordSchema.safeParse(password);
+    if (!passwordResult.success) {
+      toast.error(language === "ms" ? "Kata laluan mesti sekurang-kurangnya 6 aksara" : "Password must be at least 6 characters");
       setIsLoading(false);
       return;
     }
 
     try {
-      await signIn(email, password);
-      toast.success(t("login.success") || "Successfully signed in!");
-      navigate("/");
+      const { error } = await signIn(emailResult.data, password);
+      if (error) {
+        if (error.message.includes("Invalid login credentials")) {
+          toast.error(language === "ms" ? "E-mel atau kata laluan tidak sah" : "Invalid email or password");
+        } else if (error.message.includes("Email not confirmed")) {
+          toast.error(language === "ms" ? "Sila sahkan e-mel anda terlebih dahulu" : "Please confirm your email first");
+        } else {
+          toast.error(error.message || t("login.error") || "Sign in failed");
+        }
+      } else {
+        toast.success(t("login.success") || "Successfully signed in!");
+        navigate("/dashboard");
+      }
     } catch (error: any) {
       toast.error(error.message || t("login.error") || "Sign in failed");
     } finally {
@@ -73,8 +95,24 @@ const Login = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!signUpFullName.trim()) {
+    // Validate full name
+    const nameResult = nameSchema.safeParse(signUpFullName);
+    if (!nameResult.success) {
       toast.error(language === "ms" ? "Sila masukkan nama penuh anda" : "Please enter your full name");
+      return;
+    }
+
+    // Validate email
+    const emailResult = emailSchema.safeParse(signUpEmail);
+    if (!emailResult.success) {
+      toast.error(language === "ms" ? "Alamat e-mel tidak sah" : "Invalid email address");
+      return;
+    }
+
+    // Validate password
+    const passwordResult = passwordSchema.safeParse(signUpPassword);
+    if (!passwordResult.success) {
+      toast.error(language === "ms" ? "Kata laluan mesti sekurang-kurangnya 6 aksara" : "Password must be at least 6 characters");
       return;
     }
 
@@ -83,17 +121,20 @@ const Login = () => {
       return;
     }
 
-    if (signUpPassword.length < 6) {
-      toast.error(language === "ms" ? "Kata laluan mesti sekurang-kurangnya 6 aksara" : "Password must be at least 6 characters");
-      return;
-    }
-
     setIsSignUpLoading(true);
 
     try {
-      await signUp(signUpEmail, signUpPassword, signUpFullName);
-      toast.success(language === "ms" ? "Akaun berjaya dicipta! Anda kini telah log masuk." : "Account created successfully! You are now signed in.");
-      navigate("/");
+      const { error } = await signUp(emailResult.data, signUpPassword, nameResult.data);
+      if (error) {
+        if (error.message.includes("User already registered")) {
+          toast.error(language === "ms" ? "E-mel ini telah didaftarkan. Sila log masuk." : "This email is already registered. Please sign in.");
+        } else {
+          toast.error(error.message || (language === "ms" ? "Pendaftaran gagal" : "Sign up failed"));
+        }
+      } else {
+        toast.success(language === "ms" ? "Akaun berjaya dicipta! Anda kini telah log masuk." : "Account created successfully! You are now signed in.");
+        navigate("/dashboard");
+      }
     } catch (error: any) {
       toast.error(error.message || (language === "ms" ? "Pendaftaran gagal" : "Sign up failed"));
     } finally {
@@ -103,19 +144,35 @@ const Login = () => {
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!forgotEmail.trim()) {
-      toast.error(language === "ms" ? "Sila masukkan e-mel anda" : "Please enter your email");
+    
+    // Validate email
+    const emailResult = emailSchema.safeParse(forgotEmail);
+    if (!emailResult.success) {
+      toast.error(language === "ms" ? "Alamat e-mel tidak sah" : "Invalid email address");
       return;
     }
+    
     setIsForgotLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    toast.success(language === "ms" 
-      ? "Pautan reset kata laluan telah dihantar ke e-mel anda" 
-      : "Password reset link has been sent to your email");
-    setShowForgotPassword(false);
-    setForgotEmail("");
-    setIsForgotLoading(false);
+    
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(emailResult.data, {
+        redirectTo: `${window.location.origin}/login`,
+      });
+      
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success(language === "ms" 
+          ? "Pautan reset kata laluan telah dihantar ke e-mel anda" 
+          : "Password reset link has been sent to your email");
+        setShowForgotPassword(false);
+        setForgotEmail("");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to send reset email");
+    } finally {
+      setIsForgotLoading(false);
+    }
   };
 
   return (
