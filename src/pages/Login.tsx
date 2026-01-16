@@ -9,35 +9,48 @@ import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useDeveloper } from "@/contexts/DeveloperContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import heroImage from "@/assets/hero-building.jpg";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const { login } = useDeveloper();
+  const { login: developerLogin } = useDeveloper();
+  const { signIn } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
-    // Check if credentials match Developer
-    if (username === "Developer" && password === "Developer") {
-      const success = login(username, password);
+    // Check if credentials match Developer (special case)
+    if (email === "Developer" && password === "Developer") {
+      const success = developerLogin(email, password);
       if (success) {
         toast.success(language === "ms" ? "Log masuk pembangun berjaya!" : "Developer login successful!");
         navigate("/dashboard");
+        setIsLoading(false);
         return;
       }
     }
     
-    // Regular user login (for now just navigate to dashboard)
-    toast.success(language === "ms" ? "Log masuk berjaya!" : "Login successful!");
-    navigate("/dashboard");
+    // Regular Supabase authentication
+    const { error } = await signIn(email, password);
+    
+    if (error) {
+      toast.error(language === "ms" ? "Log masuk gagal. Sila semak e-mel dan kata laluan anda." : "Login failed. Please check your email and password.");
+    } else {
+      toast.success(language === "ms" ? "Log masuk berjaya!" : "Login successful!");
+      navigate("/dashboard");
+    }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -107,16 +120,17 @@ const Login = () => {
 
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="username">{language === "ms" ? "Nama Pengguna" : "Username"}</Label>
+                <Label htmlFor="email">{language === "ms" ? "E-mel" : "Email"}</Label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
-                    id="username"
+                    id="email"
                     type="text"
-                    placeholder={language === "ms" ? "Masukkan nama pengguna" : "Enter your username"}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder={language === "ms" ? "Masukkan e-mel anda" : "Enter your email"}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 h-12 border-input focus:border-primary focus:ring-primary"
+                    required
                   />
                 </div>
               </div>
@@ -132,6 +146,7 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 pr-10 h-12 border-input focus:border-primary focus:ring-primary"
+                    required
                   />
                   <button
                     type="button"
@@ -160,8 +175,14 @@ const Login = () => {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90">
-                {t("login.submit")}
+              <Button 
+                type="submit" 
+                className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90"
+                disabled={isLoading}
+              >
+                {isLoading 
+                  ? (language === "ms" ? "Memproses..." : "Processing...") 
+                  : t("login.submit")}
               </Button>
             </form>
 
