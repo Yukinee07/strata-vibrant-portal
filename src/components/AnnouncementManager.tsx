@@ -201,11 +201,15 @@ const AnnouncementManager = ({ onAnnouncementsChange }: AnnouncementManagerProps
 
   return (
     <div className="mb-8">
-      <div className="flex items-center gap-4 mb-4">
+      {/* Add Announcement Button - Large & Centered */}
+      <div className="flex justify-center mb-8">
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
           <DialogTrigger asChild>
-            <Button className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
-              <Plus className="w-4 h-4" />
+            <Button 
+              size="lg" 
+              className="gap-3 bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-7 text-lg font-semibold shadow-lg"
+            >
+              <Plus className="w-6 h-6" />
               {language === "ms" ? "Tambah Pengumuman" : "Add Announcement"}
             </Button>
           </DialogTrigger>
