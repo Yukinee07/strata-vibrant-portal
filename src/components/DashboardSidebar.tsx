@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, User, MessageSquare, Building2 } from "lucide-react";
+import { LayoutDashboard, User, MessageSquare, Building2, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -11,6 +11,7 @@ const DashboardSidebar = () => {
     { icon: LayoutDashboard, label: t("dashboard.nav.dashboard"), href: "/dashboard" },
     { icon: User, label: t("dashboard.nav.profile"), href: "/dashboard/profile" },
     { icon: MessageSquare, label: t("dashboard.nav.feedback"), href: "/dashboard/feedback" },
+    { icon: Home, label: t("nav.home"), href: "/" },
   ];
 
   return (
