@@ -112,9 +112,6 @@ const Announcements = () => {
                 {t("announcements.agmTitle")}
               </h1>
 
-              {/* Developer Announcement Manager */}
-              <AnnouncementManager onAnnouncementsChange={fetchAnnouncements} />
-
               {/* RSVP Notice */}
               <div className="bg-accent/20 border border-accent rounded-xl p-6 mb-10 text-center">
                 <p className="text-foreground font-medium">
@@ -124,6 +121,9 @@ const Announcements = () => {
                   {t("announcements.rsvpNote")}
                 </p>
               </div>
+
+              {/* Developer Announcement Manager - Below RSVP Box */}
+              <AnnouncementManager onAnnouncementsChange={fetchAnnouncements} />
 
               {/* Database Announcements */}
               {dbAnnouncements.length > 0 && (
